@@ -3,7 +3,9 @@ package com.example.demo.dto.experience;
 import com.example.demo.models.Experience;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
+@Component
 public class ExperienceConverter {
     @Autowired
     ModelMapper modelMapper;

@@ -1,11 +1,11 @@
 package com.example.demo.dto.shoppingCart;
 
-import com.example.demo.dto.payment.PaymentDTO;
-import com.example.demo.models.Payment;
 import com.example.demo.models.ShoppingCart;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
+@Component
 public class ShoppingCartConverter {
     @Autowired
     ModelMapper modelMapper;
