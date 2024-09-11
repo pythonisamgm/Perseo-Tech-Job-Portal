@@ -22,14 +22,14 @@ public class UserServiceImpl implements UserService {
         try {
             return iUserRepository.findAll();
         } catch (Exception e) {
-            throw new RuntimeException("Error retrieving all user", e);
+            throw new RuntimeException("Error retrieving all users", e);
         }
     }
     public Optional<User> getUserById(long id) {
         try {
             return iUserRepository.findById(id);
         } catch (Exception e) {
-            throw new RuntimeException("Error retrieving all user by id", e);
+            throw new RuntimeException("Error retrieving user by id", e);
         }
     }
     public User updateUser(User updatedUser) {
