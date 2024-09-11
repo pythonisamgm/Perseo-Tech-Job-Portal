@@ -7,9 +7,6 @@ import lombok.*;
 
 import java.util.List;
 
-
-@Entity
-@Table(name = "courses")
 @Getter
 @Setter
 @AllArgsConstructor
@@ -17,7 +14,6 @@ import java.util.List;
 @ToString
 @Builder
 public class CourseDTO {
-
 
     private Long id;
     private String title;
