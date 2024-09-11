@@ -1,4 +1,85 @@
 package com.example.demo.controllers;
 
+import com.example.demo.dto.user.UserConverter;
+import com.example.demo.dto.user.UserDTO;
+import com.example.demo.models.User;
+import com.example.demo.services.UserServiceImpl;
+import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
+import java.util.Optional;
+import java.util.stream.Collectors;
+
+@RestController
+@RequestMapping("api/v1/users")
+@RequiredArgsConstructor
 public class UserController {
+
+    @Autowired
+    private final UserServiceImpl userService;
+    @Autowired
+    private final UserConverter userConverter;
+
+
+    @PostMapping
+    public ResponseEntity<UserDTO> createUser(@RequestBody UserDTO userDTO) {
+
+        User user = userConverter.dtoToUser(userDTO);
+        User createdUser = userService.createUser(user);
+        UserDTO createdUserDTO = userConverter.userCartToDto(createdUser);
+        return ResponseEntity.status(HttpStatus.CREATED).body(createdUserDTO);
+    }
+
+    @GetMapping
+    public ResponseEntity<List<UserDTO>> getAllUsers() {
+        List<User> users = userService.getAllUsers();
+        List<UserDTO> userDTOs = users.stream()
+                .map(userConverter::userCartToDto)
+                .collect(Collectors.toList());
+        return ResponseEntity.ok(userDTOs);
+    }
+
+
+    @GetMapping("/user/{id}")
+    public ResponseEntity<UserDTO> getUserById(@PathVariable Long id) {
+        Optional<User> userOpt = userService.getUserById(id);
+        if (userOpt.isPresent()) {
+            UserDTO userDTO = userConverter.userCartToDto(userOpt.get());
+            return ResponseEntity.ok(userDTO);
+        } else {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
+        }
+    }
+
+
+    @PutMapping("/user/{id}")
+    public ResponseEntity<UserDTO> updateUser(@PathVariable Long id, @RequestBody UserDTO userDTO) {
+        User user = userConverter.dtoToUser(userDTO);
+        user.setUserId(id);
+        User updatedUser = userService.updateUser(user);
+        if (updatedUser != null) {
+            UserDTO updatedUserDTO = userConverter.userCartToDto(updatedUser);
+            return ResponseEntity.ok(updatedUserDTO);
+        } else {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
+        }
+    }
+
+
+    @DeleteMapping("/user/{id}")
+    public ResponseEntity<Void> deleteUserById(@PathVariable Long id) {
+        userService.deleteUserById(id);
+        return ResponseEntity.noContent().build();
+    }
+
+
+    @DeleteMapping
+    public ResponseEntity<Void> deleteAllUsers() {
+        userService.deleteAllUsers();
+        return ResponseEntity.noContent().build();
+    }
 }
