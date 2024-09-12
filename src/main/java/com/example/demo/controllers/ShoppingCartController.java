@@ -15,7 +15,7 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 
 @RestController
-@RequestMapping("api/v1/shoppingCarts")
+@RequestMapping("api/v1/shoppingCart")
 @RequiredArgsConstructor
 public class ShoppingCartController {
 
@@ -44,7 +44,7 @@ public class ShoppingCartController {
     }
 
 
-    @GetMapping("/shoppingCart/{id}")
+    @GetMapping("/{id}")
     public ResponseEntity<ShoppingCartDTO> getShoppingCartById(@PathVariable Long id) {
         Optional<ShoppingCart> shoppingCartOpt = shoppingCartService.getShoppingCartById(id);
         if (shoppingCartOpt.isPresent()) {
@@ -56,7 +56,7 @@ public class ShoppingCartController {
     }
 
 
-    @PutMapping("/shoppingCart/{id}")
+    @PutMapping("/{id}")
     public ResponseEntity<ShoppingCartDTO> updateShoppingCart(@PathVariable Long id, @RequestBody ShoppingCartDTO shoppingCartDTO) {
         ShoppingCart shoppingCart = shoppingCartConverter.dtoToShoppingCart(shoppingCartDTO);
         shoppingCart.setId(id);
@@ -70,7 +70,7 @@ public class ShoppingCartController {
     }
 
 
-    @DeleteMapping("/shoppingCart/{id}")
+    @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteShoppingCartById(@PathVariable Long id) {
         shoppingCartService.deleteShoppingCartById(id);
         return ResponseEntity.noContent().build();
