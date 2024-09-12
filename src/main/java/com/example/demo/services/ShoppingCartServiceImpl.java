@@ -1,8 +1,11 @@
 
 package com.example.demo.services;
 
+import com.example.demo.models.Course;
 import com.example.demo.models.ShoppingCart;
+import com.example.demo.repositories.ICourseRepository;
 import com.example.demo.repositories.IShoppingCartRepository;
+import com.example.demo.repositories.IUserRepository;
 import com.example.demo.services.interfaces.ShoppingCartService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -15,6 +18,12 @@ public class ShoppingCartServiceImpl implements ShoppingCartService {
 
     @Autowired
     private IShoppingCartRepository shoppingCartRepository;
+
+    @Autowired
+    private IUserRepository userRepository;
+
+    @Autowired
+    private ICourseRepository courseRepository;
 
     public ShoppingCart createShoppingCart(ShoppingCart shoppingCart) {
         return shoppingCartRepository.save(shoppingCart);
@@ -53,6 +62,23 @@ public class ShoppingCartServiceImpl implements ShoppingCartService {
 
     public void deleteAllShoppingCarts() {
         shoppingCartRepository.deleteAll();
+    }
+
+    public ShoppingCart addCourseToCart (Long cartId, Long courseId){
+        ShoppingCart cart = shoppingCartRepository.findById(cartId)
+                .orElseThrow(() -> new RuntimeException("ShoppingCart not found"));
+        Course course = courseRepository.findById(courseId)
+                .orElseThrow(() -> new RuntimeException("Course not found"));
+        cart.getCourses().add(course);
+        return shoppingCartRepository.save(cart);
+    }
+    public ShoppingCart removeCourseFromCart(Long cartId, Long courseId){
+        ShoppingCart cart = shoppingCartRepository.findById(cartId)
+                .orElseThrow(() -> new RuntimeException("Shopping Cart not found"));
+        Course course = courseRepository.findById(courseId)
+                .orElseThrow(() -> new RuntimeException("Course not found"));
+        cart.getCourses().remove(course);
+        return shoppingCartRepository.save(cart);
     }
 }
 
