@@ -53,6 +53,9 @@ public class WebSecurityConfig {
                             .requestMatchers("/api/v1/courses/all").permitAll() // Cursos disponibles para todos
                             .requestMatchers("/api/v1/experiences/all").permitAll() // Experiencias laborales públicas si es necesario
                             .requestMatchers("/api/v1/users/create").permitAll() // Registro de usuario
+                            .requestMatchers("/api/v1/courses/course/{id}").hasAnyAuthority("ADMIN", "USER") // Ver detalle del curso (admin y usuario)
+                            .requestMatchers("/api/v1/experiences/update/{id}").hasAnyAuthority("ADMIN", "USER") // Actualizar experiencia laboral (admin y usuario)
+                            .requestMatchers("/api/v1/experiences/delete/{id}").hasAnyAuthority("ADMIN", "USER") // Eliminar experiencia laboral (admin y usuario)
                             .requestMatchers("/api/auth/**").permitAll() // Registro, login, etc.
 
                             .anyRequest().authenticated()
