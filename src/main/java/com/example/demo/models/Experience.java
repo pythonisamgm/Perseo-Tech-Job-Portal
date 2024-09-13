@@ -6,9 +6,9 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import org.springframework.data.annotation.Id;
+import jakarta.persistence.Id;
 
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "experiences")
@@ -20,7 +20,6 @@ public class Experience {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column
     private Long id;
 
     @Column
@@ -30,10 +29,10 @@ public class Experience {
     private String position;
 
     @Column
-    private LocalDate startDate;
+    private LocalDateTime startDate;
 
     @Column
-    private LocalDate endDate;
+    private LocalDateTime endDate;
 
     @Column
     private String description;

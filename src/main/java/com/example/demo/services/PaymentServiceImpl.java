@@ -44,7 +44,7 @@ public class PaymentServiceImpl implements PaymentService {
             payment.setPaymentStatus(updatedPayment.getPaymentStatus());
             payment.setMethod(updatedPayment.getMethod());
             payment.setUser(updatedPayment.getUser());
-            payment.setOnlineCourse(updatedPayment.getOnlineCourse());
+            payment.setCourse(updatedPayment.getCourse());
             return paymentRepository.save(payment);
         }
         return null;

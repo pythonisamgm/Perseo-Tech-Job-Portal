@@ -69,16 +69,24 @@ public class ShoppingCartServiceImpl implements ShoppingCartService {
                 .orElseThrow(() -> new RuntimeException("ShoppingCart not found"));
         Course course = courseRepository.findById(courseId)
                 .orElseThrow(() -> new RuntimeException("Course not found"));
-        cart.getCourses().add(course);
-        return shoppingCartRepository.save(cart);
+        if (!cart.getCourses().contains(course)) {
+            cart.getCourses().add(course);
+            course.setShoppingCart(cart);
+            shoppingCartRepository.save(cart);
+        }
+
+        return cart;
     }
     public ShoppingCart removeCourseFromCart(Long cartId, Long courseId){
         ShoppingCart cart = shoppingCartRepository.findById(cartId)
                 .orElseThrow(() -> new RuntimeException("Shopping Cart not found"));
         Course course = courseRepository.findById(courseId)
                 .orElseThrow(() -> new RuntimeException("Course not found"));
-        cart.getCourses().remove(course);
-        return shoppingCartRepository.save(cart);
+        if (cart.getCourses().contains(course)) {
+            cart.getCourses().remove(course);
+            course.setShoppingCart(null);
+            shoppingCartRepository.save(cart);
+        }return cart;
     }
 }
 

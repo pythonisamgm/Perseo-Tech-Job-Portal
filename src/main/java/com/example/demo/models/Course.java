@@ -1,6 +1,7 @@
 package com.example.demo.models;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -19,7 +20,6 @@ public class Course {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column
     private Long id;
 
     @Column
@@ -38,9 +38,9 @@ public class Course {
     @JsonBackReference
     private List<User> usersList;
 
-    @OneToOne
+    @ManyToOne
     @JoinColumn(name = "shopping_cart_id")
-    @JsonBackReference
+    @JsonManagedReference
     private ShoppingCart shoppingCart;
 
 }

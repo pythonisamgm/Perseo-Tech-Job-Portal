@@ -31,7 +31,7 @@ public class UserController {
 
         User user = userConverter.dtoToUser(userDTO);
         User createdUser = userService.createUser(user);
-        UserDTO createdUserDTO = userConverter.userCartToDto(createdUser);
+        UserDTO createdUserDTO = userConverter.userToDto(createdUser);
         return ResponseEntity.status(HttpStatus.CREATED).body(createdUserDTO);
     }
 
@@ -39,7 +39,7 @@ public class UserController {
     public ResponseEntity<List<UserDTO>> getAllUsers() {
         List<User> users = userService.getAllUsers();
         List<UserDTO> userDTOs = users.stream()
-                .map(userConverter::userCartToDto)
+                .map(userConverter::userToDto)
                 .collect(Collectors.toList());
         return ResponseEntity.ok(userDTOs);
     }
@@ -49,7 +49,7 @@ public class UserController {
     public ResponseEntity<UserDTO> getUserById(@PathVariable Long id) {
         Optional<User> userOpt = userService.getUserById(id);
         if (userOpt.isPresent()) {
-            UserDTO userDTO = userConverter.userCartToDto(userOpt.get());
+            UserDTO userDTO = userConverter.userToDto(userOpt.get());
             return ResponseEntity.ok(userDTO);
         } else {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
@@ -63,7 +63,7 @@ public class UserController {
         user.setUserId(id);
         User updatedUser = userService.updateUser(user);
         if (updatedUser != null) {
-            UserDTO updatedUserDTO = userConverter.userCartToDto(updatedUser);
+            UserDTO updatedUserDTO = userConverter.userToDto(updatedUser);
             return ResponseEntity.ok(updatedUserDTO);
         } else {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);

@@ -10,7 +10,7 @@ import lombok.Setter;
 import java.time.LocalDateTime;
 
 @Entity
-@Table (name = "payments")
+@Table(name = "payments")
 @Getter
 @Setter
 @AllArgsConstructor
@@ -19,12 +19,7 @@ public class Payment {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column
     private Long id;
-
-    //de este attribute lo mismo se puede prescindir pq está linkeado por id
-    @Column
-    private Course course;
 
     @Column
     private Double totalAmount;
@@ -47,8 +42,6 @@ public class Payment {
     @ManyToOne
     @JoinColumn(name = "course_id")
     @JsonBackReference
-    private Course onlineCourse;
-
-
+    private Course course;
 }
 

@@ -5,7 +5,6 @@ import com.example.demo.dto.shoppingCart.ShoppingCartDTO;
 import com.example.demo.models.ShoppingCart;
 import com.example.demo.services.ShoppingCartServiceImpl;
 import lombok.RequiredArgsConstructor;
-import org.apache.coyote.Response;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -84,14 +83,16 @@ public class ShoppingCartController {
         shoppingCartService.deleteAllShoppingCarts();
         return ResponseEntity.noContent().build();
     }
-    @PutMapping ("{cartId}/courses/{courseId}")
-    public ResponseEntity<ShoppingCartDTO> addCourseToCart(@PathVariable Long cartId, @PathVariable Long courseId){
+
+    @PutMapping("{cartId}/courses/{courseId}")
+    public ResponseEntity<ShoppingCartDTO> addCourseToCart(@PathVariable Long cartId, @PathVariable Long courseId) {
         ShoppingCart updatedCart = shoppingCartService.addCourseToCart(cartId, courseId);
         ShoppingCartDTO updatedCartDTO = shoppingCartConverter.shoppingCartToDto(updatedCart);
         return ResponseEntity.ok(updatedCartDTO);
     }
+
     @DeleteMapping("/{cartId}/courses/{courseId}")
-    public ResponseEntity<ShoppingCartDTO> removeCourseFromCart(@PathVariable Long cartId, @PathVariable Long courseId){
+    public ResponseEntity<ShoppingCartDTO> removeCourseFromCart(@PathVariable Long cartId, @PathVariable Long courseId) {
         ShoppingCart updatedCart = shoppingCartService.removeCourseFromCart(cartId, courseId);
         ShoppingCartDTO updatedCartDTO = shoppingCartConverter.shoppingCartToDto(updatedCart);
         return ResponseEntity.ok(updatedCartDTO);

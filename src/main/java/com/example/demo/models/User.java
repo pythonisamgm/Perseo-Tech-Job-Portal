@@ -3,12 +3,11 @@ package com.example.demo.models;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.*;
-import org.springframework.data.annotation.Id;
+import jakarta.persistence.Id;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
-import javax.management.relation.Role;
 import java.util.Collection;
 import java.util.List;
 
@@ -24,8 +23,6 @@ public class User implements UserDetails {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column
-
     private Long userId;
 
     @Column(nullable = false, unique = true)
@@ -39,13 +36,13 @@ public class User implements UserDetails {
 
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
-    private ERole role;  // ENUM para USER, ADMIN
+    private ERole role;
 
     @Column
-    private String oauthProvider;  // Proveedor de OAuth (GitHub, LinkedIn)
+    private String oauthProvider;
 
     @Column
-    private String oauthToken;  // Token de OAuth si es un login con GitHub
+    private String oauthToken;
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
     @JsonManagedReference

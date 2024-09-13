@@ -33,6 +33,7 @@ public class ExperienceController {
         ExperienceDTO createdExperienceDTO = experienceConverter.experienceToDto(createdExperience);
         return ResponseEntity.status(HttpStatus.CREATED).body(createdExperienceDTO);
     }
+
     @GetMapping("/all")
     public ResponseEntity<List<ExperienceDTO>> getAllExperiences() {
         List<Experience> experiences = experienceService.getAllExperiences();
@@ -41,6 +42,7 @@ public class ExperienceController {
                 .collect(Collectors.toList());
         return ResponseEntity.ok(experienceDTOs);
     }
+
     @GetMapping("/experience/{id}")
     public ResponseEntity<ExperienceDTO> getExperienceById(@PathVariable Long id) {
         Optional<Experience> experienceOpt = experienceService.getExperienceById(id);
@@ -51,6 +53,7 @@ public class ExperienceController {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
         }
     }
+
     @PutMapping("/update/{id}")
     public ResponseEntity<ExperienceDTO> updateExperience(@PathVariable Long id, @RequestBody ExperienceDTO experienceDTO) {
         Experience experience = experienceConverter.dtoToExperience(experienceDTO);
@@ -63,11 +66,13 @@ public class ExperienceController {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
         }
     }
+
     @DeleteMapping("/delete/{id}")
     public ResponseEntity<Void> deleteExperienceById(@PathVariable Long id) {
         experienceService.deleteExperienceById(id);
         return ResponseEntity.noContent().build();
     }
+
     @DeleteMapping("/delete/all")
     public ResponseEntity<Void> deleteAllExperiences() {
         experienceService.deleteAllExperiences();

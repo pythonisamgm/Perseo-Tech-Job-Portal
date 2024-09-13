@@ -1,7 +1,5 @@
 package com.example.demo.dto.shoppingCart;
 
-import com.example.demo.dto.course.CourseDTO;
-import com.example.demo.dto.user.UserDTO;
 import lombok.*;
 
 import java.util.List;
@@ -14,7 +12,7 @@ import java.util.List;
 @Builder
 public class ShoppingCartDTO {
     private Long id;
-    private UserDTO user;
-    private List<CourseDTO> courses;
+    private Long userId;
+    private List<Long> courseIds;
 
 }

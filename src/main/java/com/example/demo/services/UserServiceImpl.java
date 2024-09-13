@@ -25,6 +25,7 @@ public class UserServiceImpl implements UserService {
             throw new RuntimeException("Error retrieving all users", e);
         }
     }
+
     public Optional<User> getUserById(long id) {
         try {
             return iUserRepository.findById(id);
@@ -32,6 +33,7 @@ public class UserServiceImpl implements UserService {
             throw new RuntimeException("Error retrieving user by id", e);
         }
     }
+
     public User updateUser(User updatedUser) {
         Optional<User> existingUser = iUserRepository.findById(updatedUser.getUserId());
         if (existingUser.isPresent()) {
@@ -44,6 +46,7 @@ public class UserServiceImpl implements UserService {
         }
         return null;
     }
+
     public void deleteUserById(Long id) {
         iUserRepository.deleteById(id);
     }

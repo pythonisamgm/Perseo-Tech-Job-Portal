@@ -10,7 +10,7 @@ import lombok.Setter;
 import java.util.List;
 
 @Entity
-@Table (name = "shopping_cart")
+@Table(name = "shopping_cart")
 @Getter
 @Setter
 @AllArgsConstructor
@@ -19,7 +19,6 @@ public class ShoppingCart {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column
     private Long id;
 
     @OneToOne
