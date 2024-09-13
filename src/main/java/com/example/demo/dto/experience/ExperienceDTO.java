@@ -1,6 +1,6 @@
 package com.example.demo.dto.experience;
 
-import com.example.demo.models.User;
+import com.example.demo.dto.user.UserDTO;
 import lombok.*;
 
 import java.time.LocalDate;
@@ -19,7 +19,7 @@ public class ExperienceDTO {
     private LocalDate startDate;
     private LocalDate endDate;
     private String description;
-    private User user;
+    private UserDTO user;
 
 }
 

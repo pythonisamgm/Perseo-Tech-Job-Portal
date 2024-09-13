@@ -1,8 +1,7 @@
 package com.example.demo.dto.course;
 
-import com.example.demo.models.ShoppingCart;
-import com.example.demo.models.User;
-import jakarta.persistence.*;
+import com.example.demo.dto.shoppingCart.ShoppingCartDTO;
+import com.example.demo.dto.user.UserDTO;
 import lombok.*;
 
 import java.util.List;
@@ -20,8 +19,8 @@ public class CourseDTO {
     private String description;
     private Double price;
     private String createdAt;
-    private List<User> usersList;
-    private ShoppingCart shoppingCart;
+    private List<UserDTO> usersList;
+    private ShoppingCartDTO shoppingCart;
 
 }
 

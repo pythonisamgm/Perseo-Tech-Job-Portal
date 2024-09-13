@@ -18,6 +18,7 @@ import java.util.stream.Collectors;
 @RestController
 @RequestMapping("api/v1/shoppingCart")
 @RequiredArgsConstructor
+@CrossOrigin("*")
 public class ShoppingCartController {
 
     @Autowired
@@ -26,7 +27,7 @@ public class ShoppingCartController {
     private final ShoppingCartConverter shoppingCartConverter;
 
 
-    @PostMapping
+    @PostMapping("/create")
     public ResponseEntity<ShoppingCartDTO> createShoppingCart(@RequestBody ShoppingCartDTO shoppingCartDTO) {
         ShoppingCart shoppingCart = shoppingCartConverter.dtoToShoppingCart(shoppingCartDTO);
         ShoppingCart createdCart = shoppingCartService.createShoppingCart(shoppingCart);
@@ -35,7 +36,7 @@ public class ShoppingCartController {
     }
 
 
-    @GetMapping
+    @GetMapping("/all")
     public ResponseEntity<List<ShoppingCartDTO>> getAllShoppingCarts() {
         List<ShoppingCart> shoppingCarts = shoppingCartService.getAllShoppingCarts();
         List<ShoppingCartDTO> shoppingCartDTOs = shoppingCarts.stream()
@@ -45,7 +46,7 @@ public class ShoppingCartController {
     }
 
 
-    @GetMapping("/{id}")
+    @GetMapping("/cart/{id}")
     public ResponseEntity<ShoppingCartDTO> getShoppingCartById(@PathVariable Long id) {
         Optional<ShoppingCart> shoppingCartOpt = shoppingCartService.getShoppingCartById(id);
         if (shoppingCartOpt.isPresent()) {
@@ -57,7 +58,7 @@ public class ShoppingCartController {
     }
 
 
-    @PutMapping("/{id}")
+    @PutMapping("/update/{id}")
     public ResponseEntity<ShoppingCartDTO> updateShoppingCart(@PathVariable Long id, @RequestBody ShoppingCartDTO shoppingCartDTO) {
         ShoppingCart shoppingCart = shoppingCartConverter.dtoToShoppingCart(shoppingCartDTO);
         shoppingCart.setId(id);
@@ -71,14 +72,14 @@ public class ShoppingCartController {
     }
 
 
-    @DeleteMapping("/{id}")
+    @DeleteMapping("/delete/{id}")
     public ResponseEntity<Void> deleteShoppingCartById(@PathVariable Long id) {
         shoppingCartService.deleteShoppingCartById(id);
         return ResponseEntity.noContent().build();
     }
 
 
-    @DeleteMapping
+    @DeleteMapping("/delete/all")
     public ResponseEntity<Void> deleteAllShoppingCarts() {
         shoppingCartService.deleteAllShoppingCarts();
         return ResponseEntity.noContent().build();

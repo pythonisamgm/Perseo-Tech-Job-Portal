@@ -17,6 +17,7 @@ import java.util.stream.Collectors;
 @RestController
 @RequestMapping("api/v1/experiences")
 @RequiredArgsConstructor
+@CrossOrigin("*")
 public class ExperienceController {
 
     @Autowired
@@ -25,14 +26,14 @@ public class ExperienceController {
     @Autowired
     private final ExperienceConverter experienceConverter;
 
-    @PostMapping
+    @PostMapping("/create")
     public ResponseEntity<ExperienceDTO> createExperience(@RequestBody ExperienceDTO experienceDTO) {
         Experience experience = experienceConverter.dtoToExperience(experienceDTO);
         Experience createdExperience = experienceService.createExperience(experience);
         ExperienceDTO createdExperienceDTO = experienceConverter.experienceToDto(createdExperience);
         return ResponseEntity.status(HttpStatus.CREATED).body(createdExperienceDTO);
     }
-    @GetMapping
+    @GetMapping("/all")
     public ResponseEntity<List<ExperienceDTO>> getAllExperiences() {
         List<Experience> experiences = experienceService.getAllExperiences();
         List<ExperienceDTO> experienceDTOs = experiences.stream()
@@ -50,7 +51,7 @@ public class ExperienceController {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
         }
     }
-    @PutMapping("/experience/{id}")
+    @PutMapping("/update/{id}")
     public ResponseEntity<ExperienceDTO> updateExperience(@PathVariable Long id, @RequestBody ExperienceDTO experienceDTO) {
         Experience experience = experienceConverter.dtoToExperience(experienceDTO);
         experience.setId(id); // Asegurarse de que el ID sea el correcto
@@ -62,12 +63,12 @@ public class ExperienceController {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
         }
     }
-    @DeleteMapping("/experience/{id}")
+    @DeleteMapping("/delete/{id}")
     public ResponseEntity<Void> deleteExperienceById(@PathVariable Long id) {
         experienceService.deleteExperienceById(id);
         return ResponseEntity.noContent().build();
     }
-    @DeleteMapping
+    @DeleteMapping("/delete/all")
     public ResponseEntity<Void> deleteAllExperiences() {
         experienceService.deleteAllExperiences();
         return ResponseEntity.noContent().build();

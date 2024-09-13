@@ -17,6 +17,7 @@ import java.util.stream.Collectors;
 @RestController
 @RequestMapping("api/v1/courses")
 @RequiredArgsConstructor
+@CrossOrigin("*")
 public class CourseController {
 
     @Autowired
@@ -26,7 +27,7 @@ public class CourseController {
     private final CourseConverter courseConverter;
 
 
-    @PostMapping
+    @PostMapping("/create")
     public ResponseEntity<CourseDTO> createCourse(@RequestBody CourseDTO courseDTO) {
         Course course = courseConverter.dtoToCourse(courseDTO);
         Course createdCourse = courseService.createCourse(course);
@@ -35,7 +36,7 @@ public class CourseController {
     }
 
 
-    @GetMapping
+    @GetMapping("/all")
     public ResponseEntity<List<CourseDTO>> getAllCourses() {
         List<Course> courses = courseService.getAllCourses();
         List<CourseDTO> courseDTOs = courses.stream()
@@ -57,7 +58,7 @@ public class CourseController {
     }
 
 
-    @PutMapping("/course/{id}")
+    @PutMapping("/update/{id}")
     public ResponseEntity<CourseDTO> updateCourse(@PathVariable Long id, @RequestBody CourseDTO courseDTO) {
         Course course = courseConverter.dtoToCourse(courseDTO);
         course.setId(id);
@@ -71,14 +72,14 @@ public class CourseController {
     }
 
 
-    @DeleteMapping("/course/{id}")
+    @DeleteMapping("/delete/{id}")
     public ResponseEntity<Void> deleteCourseById(@PathVariable Long id) {
         courseService.deleteCourseById(id);
         return ResponseEntity.noContent().build();
     }
 
 
-    @DeleteMapping
+    @DeleteMapping("/delete/all")
     public ResponseEntity<Void> deleteAllCourses() {
         courseService.deleteAllCourses();
         return ResponseEntity.noContent().build();

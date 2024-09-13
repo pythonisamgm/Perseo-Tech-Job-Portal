@@ -1,9 +1,7 @@
 package com.example.demo.dto.shoppingCart;
 
-import com.example.demo.models.Course;
-import com.example.demo.models.User;
-import com.fasterxml.jackson.annotation.JsonBackReference;
-import jakarta.persistence.*;
+import com.example.demo.dto.course.CourseDTO;
+import com.example.demo.dto.user.UserDTO;
 import lombok.*;
 
 import java.util.List;
@@ -16,7 +14,7 @@ import java.util.List;
 @Builder
 public class ShoppingCartDTO {
     private Long id;
-    private User user;
-    private List<Course> courses;
+    private UserDTO user;
+    private List<CourseDTO> courses;
 
 }

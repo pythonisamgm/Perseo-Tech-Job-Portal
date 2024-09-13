@@ -17,6 +17,7 @@ import java.util.stream.Collectors;
 @RestController
 @RequestMapping("api/v1/payments")
 @RequiredArgsConstructor
+@CrossOrigin("*")
 public class PaymentController {
 
     @Autowired

@@ -1,9 +1,9 @@
 package com.example.demo.dto.payment;
 
+import com.example.demo.dto.course.CourseDTO;
+import com.example.demo.dto.user.UserDTO;
 import com.example.demo.models.Course;
 import com.example.demo.models.PaymentStatus;
-import com.example.demo.models.User;
-import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -26,8 +26,8 @@ public class PaymentDTO {
     @Enumerated(EnumType.STRING)
     private PaymentStatus paymentStatus;
     private String method;
-    private User user;
-    private Course onlineCourse;
+    private UserDTO user;
+    private CourseDTO onlineCourse;
 
 
 }

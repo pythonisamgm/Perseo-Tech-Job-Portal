@@ -17,6 +17,7 @@ import java.util.stream.Collectors;
 @RestController
 @RequestMapping("api/v1/users")
 @RequiredArgsConstructor
+@CrossOrigin("*")
 public class UserController {
 
     @Autowired
@@ -25,7 +26,7 @@ public class UserController {
     private final UserConverter userConverter;
 
 
-    @PostMapping
+    @PostMapping("/create")
     public ResponseEntity<UserDTO> createUser(@RequestBody UserDTO userDTO) {
 
         User user = userConverter.dtoToUser(userDTO);
@@ -34,7 +35,7 @@ public class UserController {
         return ResponseEntity.status(HttpStatus.CREATED).body(createdUserDTO);
     }
 
-    @GetMapping
+    @GetMapping("/all")
     public ResponseEntity<List<UserDTO>> getAllUsers() {
         List<User> users = userService.getAllUsers();
         List<UserDTO> userDTOs = users.stream()
@@ -56,7 +57,7 @@ public class UserController {
     }
 
 
-    @PutMapping("/user/{id}")
+    @PutMapping("/update/{id}")
     public ResponseEntity<UserDTO> updateUser(@PathVariable Long id, @RequestBody UserDTO userDTO) {
         User user = userConverter.dtoToUser(userDTO);
         user.setUserId(id);
@@ -70,14 +71,14 @@ public class UserController {
     }
 
 
-    @DeleteMapping("/user/{id}")
+    @DeleteMapping("/delete/{id}")
     public ResponseEntity<Void> deleteUserById(@PathVariable Long id) {
         userService.deleteUserById(id);
         return ResponseEntity.noContent().build();
     }
 
 
-    @DeleteMapping
+    @DeleteMapping("/delete/all")
     public ResponseEntity<Void> deleteAllUsers() {
         userService.deleteAllUsers();
         return ResponseEntity.noContent().build();

@@ -20,33 +20,49 @@ public class WebSecurityConfig {
     private final AuthenticationProvider authenticationProvider;
     private final AuthTokenFilter authTokenFilter;
 
-    @Bean
-    public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
-        return http
-                .csrf(csrf ->
-                        csrf.disable())
-                .authorizeHttpRequests(authRequest ->
-                        authRequest
-                                .requestMatchers("/api/auth/**").permitAll()
-                                .requestMatchers("/api/test/all").permitAll()
-                                .requestMatchers("/api/test/user").hasAnyAuthority("ADMIN", "USER")
-                                .requestMatchers("/api/test/admin").hasAuthority("ADMIN")
-                                .requestMatchers("/api/v1/newPost").hasAuthority("ADMIN")
-                                .requestMatchers("/api/v1/post/delete/**").hasAuthority("ADMIN")
-                                .requestMatchers("/api/v1/post/update/**").hasAuthority("ADMIN")
-                                .requestMatchers("/api/v1/post/getAll").permitAll()
-                                .requestMatchers("/api/v1/donations").hasAnyAuthority("ADMIN", "USER")
-                                .requestMatchers("/api/v1/donations/delete/**").hasAuthority("ADMIN")
-                                .requestMatchers("/api/v1/donations/update/**").hasAuthority("ADMIN")
-                                .requestMatchers("/api/v1/donations/getAll").permitAll()
-                                .anyRequest().authenticated()
-                )
-                .sessionManagement(sessionManager ->
-                        sessionManager
-                                .sessionCreationPolicy(SessionCreationPolicy.STATELESS))
-                .authenticationProvider(authenticationProvider)
-                .addFilterBefore(authTokenFilter, UsernamePasswordAuthenticationFilter.class)
-                .build();
+
+        @Bean
+        public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
+            return http
+                    .csrf(csrf -> csrf.disable())
+                    .authorizeHttpRequests(authRequest -> authRequest
+
+                            .requestMatchers("/api/auth/**").permitAll() // Registro, login, etc.
+                            // Endpoints accesibles solo por admins
+                            .requestMatchers("/api/v1/users/all").hasAuthority("ADMIN") // Ver todos los usuarios
+                            .requestMatchers("/api/v1/courses/create").hasAuthority("ADMIN") // Crear curso
+                            .requestMatchers("/api/v1/courses/update/{id}").hasAuthority("ADMIN") // Actualizar curso
+                            .requestMatchers("/api/v1/courses/delete/{id}").hasAuthority("ADMIN") // Eliminar curso
+                            .requestMatchers("/api/v1/shoppingCart/update/{id}").hasAuthority("ADMIN") // Actualizar carrito (si necesario para admin)
+                            .requestMatchers("/api/v1/shoppingCart/delete/{id}").hasAuthority("ADMIN") // Eliminar carrito (si necesario para admin)
+
+                            // Endpoints accesibles por usuarios y admins
+                            .requestMatchers("/api/v1/users/update/{id}").hasAnyAuthority("ADMIN", "USER") // Actualizar perfil (propio para usuario, todos para admin)
+                            .requestMatchers("/api/v1/users/delete/{id}").hasAnyAuthority("ADMIN", "USER") // Eliminar perfil (propio para usuario, todos para admin)
+                            .requestMatchers("/api/v1/shoppingCart/{cartId}/courses/{courseId}").hasAnyAuthority("ADMIN", "USER") // Añadir o eliminar curso del carrito (propio)
+
+                            // Endpoints accesibles por usuarios autenticados
+                            .requestMatchers("/api/v1/users/user/{id}").authenticated() // Ver perfil propio
+                            .requestMatchers("/api/v1/experiences/create").authenticated() // Crear experiencia laboral (propia)
+                            .requestMatchers("/api/v1/experiences/experience/{id}").authenticated() // Ver experiencia laboral (propia)
+                            .requestMatchers("/api/v1/shoppingCart/create").authenticated() // Crear carrito
+                            .requestMatchers("/api/v1/shoppingCart/cart/{id}").authenticated() // Ver carrito (propio)
+                            .requestMatchers("/api/v1/payments").authenticated() // Realizar pagos
+
+                            // Endpoints que pueden ser accedidos por cualquier usuario sin autenticación
+                            .requestMatchers("/api/v1/courses/all").permitAll() // Cursos disponibles para todos
+                            .requestMatchers("/api/v1/experiences/all").permitAll() // Experiencias laborales públicas si es necesario
+                            .requestMatchers("/api/v1/users/create").permitAll() // Registro de usuario
+                            .requestMatchers("/api/auth/**").permitAll() // Registro, login, etc.
+
+                            .anyRequest().authenticated()
+                    )
+                    .sessionManagement(sessionManager ->
+                            sessionManager.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+                    .authenticationProvider(authenticationProvider)
+                    .addFilterBefore(authTokenFilter, UsernamePasswordAuthenticationFilter.class)
+                    .build();
+        }
     }
-}
+
 
