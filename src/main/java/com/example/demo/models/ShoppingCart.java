@@ -26,10 +26,5 @@ public class ShoppingCart {
     @JsonBackReference
     private User user;
 
-    @OneToMany(mappedBy = "shoppingCart")
-    @JsonBackReference
-    private List<Course> courses;
-
-
 }
 
