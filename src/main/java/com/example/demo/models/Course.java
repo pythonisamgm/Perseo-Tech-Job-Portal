@@ -38,10 +38,5 @@ public class Course {
     @JsonBackReference
     private List<User> usersList;
 
-    @ManyToOne
-    @JoinColumn(name = "shopping_cart_id")
-    @JsonManagedReference
-    private ShoppingCart shoppingCart;
-
 }
 
