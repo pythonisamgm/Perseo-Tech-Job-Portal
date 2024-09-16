@@ -1,11 +1,11 @@
-version: '3.8'
+version: '3.9'
 services:
 
   springboot-app:
 
     build: src/main/java/com/example/demo
 
-    container_name: veterinaryclinic-app **EL CONTENEDOR EN MINUSCULA**
+    container_name: Perseo-app
 
     ports:
       - "8080:8080"
