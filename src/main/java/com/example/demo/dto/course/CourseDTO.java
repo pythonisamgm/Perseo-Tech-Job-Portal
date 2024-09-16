@@ -18,8 +18,6 @@ public class CourseDTO {
     private Double price;
     private String createdAt;
     private List<Long> usersId;
-    private Long shoppingCartId;
-
 }
 
 
