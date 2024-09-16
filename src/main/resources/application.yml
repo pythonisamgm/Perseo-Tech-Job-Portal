@@ -5,7 +5,7 @@ spring:
         registration:
           github:
             clientId: Ov23li3xlZSitOCoJKVK
-            clientSecret: 19bb0b5a38f5bed410f8ea4a1e11e3e10477fcab
+            clientSecret: 9efddd1f813d480bead6e4af08ceae9345cf8435
             scope: user:email
             redirectUri: "{baseUrl}/login/oauth2/code/github"
             authorizationGrantType: authorization_code

@@ -39,6 +39,6 @@ public class ApplicationConfig {
     @Bean
     public UserDetailsService userDetailsService() {
         return username -> userRepository.findByUsername(username)
-                .orElseThrow(() -> new UsernameNotFoundException("No existe el usiario"));
+                .orElseThrow(() -> new UsernameNotFoundException("User does not exist"));
     }
 }
