@@ -3,6 +3,7 @@ package com.example.demo.controllers;
 import com.example.demo.dto.experience.ExperienceConverter;
 import com.example.demo.dto.experience.ExperienceDTO;
 import com.example.demo.models.Experience;
+import com.example.demo.models.User;
 import com.example.demo.services.ExperienceServiceImpl;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -57,7 +58,7 @@ public class ExperienceController {
     @PutMapping("/update/{id}")
     public ResponseEntity<ExperienceDTO> updateExperience(@PathVariable Long id, @RequestBody ExperienceDTO experienceDTO) {
         Experience experience = experienceConverter.dtoToExperience(experienceDTO);
-        experience.setId(id); // Asegurarse de que el ID sea el correcto
+        experience.setId(id);
         Experience updatedExperience = experienceService.updateExperience(experience);
         if (updatedExperience != null) {
             ExperienceDTO updatedExperienceDTO = experienceConverter.experienceToDto(updatedExperience);
@@ -77,5 +78,15 @@ public class ExperienceController {
     public ResponseEntity<Void> deleteAllExperiences() {
         experienceService.deleteAllExperiences();
         return ResponseEntity.noContent().build();
+    }
+    @GetMapping("/user/{userId}")
+    public ResponseEntity<List<ExperienceDTO>> getExperiencesByUser(@PathVariable Long userId) {
+        User user = new User();
+        user.setUserId(userId);
+        List<Experience> experiences = experienceService.getExperiencesByUser(user);
+        List<ExperienceDTO> experienceDTOs = experiences.stream()
+                .map(experienceConverter::experienceToDto)
+                .toList();
+        return new ResponseEntity<>(experienceDTOs, HttpStatus.OK);
     }
 }

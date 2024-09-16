@@ -1,0 +1,17 @@
+version: '3.8'
+services:
+
+  springboot-app:
+
+    build: src/main/java/com/example/demo
+
+    container_name: veterinaryclinic-app **EL CONTENEDOR EN MINUSCULA**
+
+    ports:
+      - "8080:8080"
+
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:mysql://host.docker.internal:3306/perseo_DB
+      SPRING_DATASOURCE_USERNAME: root
+      SPRING_DATASOURCE_PASSWORD:
+      SPRING_JPA_HIBERNATE_DDL_AUTO: update

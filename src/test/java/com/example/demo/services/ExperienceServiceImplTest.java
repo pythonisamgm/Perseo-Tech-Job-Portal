@@ -133,4 +133,17 @@ class ExperienceServiceImplTest {
 
         verify(experienceRepository, times(1)).deleteAll();
     }
+    @Test
+    void testGetExperiencesByUser() {
+        when(experienceRepository.findByUser(user)).thenReturn(Arrays.asList(experience1, experience2));
+
+        List<Experience> result = experienceService.getExperiencesByUser(user);
+
+        assertNotNull(result);
+        assertEquals(2, result.size());
+        assertTrue(result.contains(experience1));
+        assertTrue(result.contains(experience2));
+
+        verify(experienceRepository, times(1)).findByUser(user);
+    }
 }

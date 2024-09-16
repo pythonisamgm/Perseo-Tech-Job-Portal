@@ -1,6 +1,7 @@
 package com.example.demo.services;
 
 import com.example.demo.models.Experience;
+import com.example.demo.models.User;
 import com.example.demo.repositories.IExperienceRepository;
 import com.example.demo.services.interfaces.ExperienceService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -56,6 +57,13 @@ public class ExperienceServiceImpl implements ExperienceService {
 
     public void deleteAllExperiences() {
         experienceRepository.deleteAll();
+    }
+    public List<Experience> getExperiencesByUser(User user) {
+        try {
+            return experienceRepository.findByUser(user);
+        } catch (Exception e) {
+            throw new RuntimeException("Error retrieving experiences by user", e);
+        }
     }
 }
 
