@@ -42,7 +42,7 @@ class CourseServiceImplTest {
         course1.setDescription("Aprende Java desde cero");
         course1.setPrice(100.0);
         course1.setCreatedAt("2023-01-01");
-        course1.setShoppingCart(shoppingCart);
+
 
         course2 = new Course();
         course2.setId(2L);
@@ -50,7 +50,7 @@ class CourseServiceImplTest {
         course2.setDescription("Aprende Spring Boot");
         course2.setPrice(120.0);
         course2.setCreatedAt("2023-02-01");
-        course2.setShoppingCart(shoppingCart);
+
     }
 
     @Test
@@ -97,7 +97,7 @@ class CourseServiceImplTest {
         updatedCourse.setDescription("Aprende Java avanzado");
         updatedCourse.setPrice(150.0);
         updatedCourse.setCreatedAt("2023-03-01");
-        updatedCourse.setShoppingCart(shoppingCart);
+
 
         when(courseRepository.findById(1L)).thenReturn(Optional.of(course1));
         when(courseRepository.save(course1)).thenReturn(updatedCourse);

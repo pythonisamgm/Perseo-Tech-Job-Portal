@@ -51,11 +51,11 @@ class CourseControllerTest {
         MockitoAnnotations.openMocks(this);
         mockMvc = MockMvcBuilders.standaloneSetup(courseController).build();
 
-        courseDTO1 = new CourseDTO(1L, "Title1", "Description1", 100.0, "2020-01-01T00:00:00", List.of(1L), 1L);
-        courseDTO2 = new CourseDTO(2L, "Title2", "Description2", 200.0, "2021-02-01T00:00:00", List.of(2L), 2L);
+        courseDTO1 = new CourseDTO(1L, "Title1", "Description1", 100.0, "2020-01-01T00:00:00", List.of(1L));
+        courseDTO2 = new CourseDTO(2L, "Title2", "Description2", 200.0, "2021-02-01T00:00:00", List.of(2L));
 
-        course1 = new Course(1L, "Title1", "Description1", 100.0, "2020-01-01T00:00:00", null, null);
-        course2 = new Course(2L, "Title2", "Description2", 200.0, "2021-02-01T00:00:00", null, null);
+        Course course1 = new Course(1L, "Title1", "Description1", 100.0, null, null);
+        Course course2 = new Course(2L, "Title2", "Description2", 200.0, null, null);
 
         courseDTOList = List.of(courseDTO1, courseDTO2);
         courseList = List.of(course1, course2);
