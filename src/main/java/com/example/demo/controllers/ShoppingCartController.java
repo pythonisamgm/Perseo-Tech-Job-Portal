@@ -84,16 +84,9 @@ public class ShoppingCartController {
         return ResponseEntity.noContent().build();
     }
 
-    @PutMapping("{cartId}/courses/{courseId}")
-    public ResponseEntity<ShoppingCartDTO> addCourseToCart(@PathVariable Long cartId, @PathVariable Long courseId) {
-        ShoppingCart updatedCart = shoppingCartService.addCourseToCart(cartId, courseId);
-        ShoppingCartDTO updatedCartDTO = shoppingCartConverter.shoppingCartToDto(updatedCart);
-        return ResponseEntity.ok(updatedCartDTO);
-    }
-
-    @DeleteMapping("/{cartId}/courses/{courseId}")
-    public ResponseEntity<ShoppingCartDTO> removeCourseFromCart(@PathVariable Long cartId, @PathVariable Long courseId) {
-        ShoppingCart updatedCart = shoppingCartService.removeCourseFromCart(cartId, courseId);
+    @PutMapping("/{cartId}/user/{userId}")
+    public ResponseEntity<ShoppingCartDTO> addCoursesFromUserToCart(@PathVariable Long cartId, @PathVariable Long userId) {
+        ShoppingCart updatedCart = shoppingCartService.addCourseToCart(cartId, userId);
         ShoppingCartDTO updatedCartDTO = shoppingCartConverter.shoppingCartToDto(updatedCart);
         return ResponseEntity.ok(updatedCartDTO);
     }

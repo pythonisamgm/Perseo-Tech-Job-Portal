@@ -56,29 +56,52 @@ class ShoppingCartControllerTest {
         MockitoAnnotations.openMocks(this);
         mockMvc = MockMvcBuilders.standaloneSetup(shoppingCartController).build();
 
-        // Initialize test data
-        user = new User(1L, "user1", "user1@example.com", "password1", ERole.USER, "github", "token123", new ArrayList<>(), new ArrayList<>(), new ShoppingCart());
-        course = new Course(1L, "Course 1", "Description", 100.00, "null", new ArrayList<>(), shoppingCart1);
+        shoppingCartDTO1 = new ShoppingCartDTO(1L, 1L, List.of(1L), 100.0);
+        shoppingCartDTO2 = new ShoppingCartDTO(2L, 2L, List.of(2L), 200.0);
 
-        shoppingCart1 = new ShoppingCart(1L, user, List.of(course));
-        shoppingCart2 = new ShoppingCart(2L, user, List.of(course));
+        User user1 = new User();
+        user1.setUserId(1L);
+        user1.setUsername("User1");
+        user1.setEmail("user1@example.com");
+        user1.setRole(ERole.USER);
+        user1.setCourseList(new ArrayList<>());
+        user1.setShoppingCart(new ShoppingCart());
 
-        shoppingCartDTO1 = new ShoppingCartDTO(1L, 1L, List.of(1L));
-        shoppingCartDTO2 = new ShoppingCartDTO(2L, 1L, List.of(1L));
+        User user2 = new User();
+        user2.setUserId(2L);
+        user2.setUsername("User2");
+        user2.setEmail("user2@example.com");
+        user2.setRole(ERole.USER);
+        user2.setCourseList(new ArrayList<>());
+        user2.setShoppingCart(new ShoppingCart());
+
+        Course course1 = new Course(1L, "Title1", "Description1", 100.0, null, null);
+        Course course2 = new Course(2L, "Title2", "Description2", 200.0, null, null);
+        ShoppingCart shoppingCart1 = new ShoppingCart();
+        shoppingCart1.setId(1L);
+        shoppingCart1.setUser(user1);
+        shoppingCart1.setCourses(List.of(course1));
+        shoppingCart1.setTotalAmount(100.0);
+
+        ShoppingCart shoppingCart2 = new ShoppingCart();
+        shoppingCart2.setId(2L);
+        shoppingCart2.setUser(user2);
+        shoppingCart2.setCourses(List.of(course2));
+        shoppingCart2.setTotalAmount(200.0);
 
         shoppingCartDTOList = List.of(shoppingCartDTO1, shoppingCartDTO2);
         shoppingCartList = List.of(shoppingCart1, shoppingCart2);
 
+        when(shoppingCartConverter.shoppingCartToDto(any(ShoppingCart.class))).thenReturn(shoppingCartDTO1).thenReturn(shoppingCartDTO2);
         when(shoppingCartConverter.dtoToShoppingCart(any(ShoppingCartDTO.class))).thenReturn(shoppingCart1);
-        when(shoppingCartConverter.shoppingCartToDto(any(ShoppingCart.class))).thenReturn(shoppingCartDTO1);
         when(shoppingCartService.getAllShoppingCarts()).thenReturn(shoppingCartList);
         when(shoppingCartService.getShoppingCartById(anyLong())).thenReturn(Optional.of(shoppingCart1));
         when(shoppingCartService.createShoppingCart(any(ShoppingCart.class))).thenReturn(shoppingCart1);
         when(shoppingCartService.updateShoppingCart(any(ShoppingCart.class))).thenReturn(shoppingCart1);
         doNothing().when(shoppingCartService).deleteShoppingCartById(anyLong());
         doNothing().when(shoppingCartService).deleteAllShoppingCarts();
-        when(shoppingCartService.addCourseToCart(anyLong(), anyLong())).thenReturn(shoppingCart1);
-        when(shoppingCartService.removeCourseFromCart(anyLong(), anyLong())).thenReturn(shoppingCart1);
+
+
     }
 
     @Test

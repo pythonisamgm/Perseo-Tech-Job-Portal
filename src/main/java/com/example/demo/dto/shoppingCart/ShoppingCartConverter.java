@@ -29,14 +29,15 @@ public class ShoppingCartConverter {
             return null;
         }
 
-        ShoppingCartDTO shoppingCartDTO = modelMapper.map(shoppingCart, ShoppingCartDTO.class);
-        List<Long> courseIds = shoppingCart.getCourses() != null ?
-                shoppingCart.getCourses().stream().map(Course::getId).collect(Collectors.toList()) :
-                null;
+        ShoppingCartDTO shoppingCartDTO = new ShoppingCartDTO();
+        shoppingCartDTO.setId(shoppingCart.getId());
+        shoppingCartDTO.setTotalAmount(shoppingCart.getTotalAmount());
+        shoppingCartDTO.setUserId(shoppingCart.getUser() != null ? shoppingCart.getUser().getUserId() : null);
+
+        List<Long> courseIds = shoppingCart.getCourses().stream()
+                .map(Course::getId)
+                .collect(Collectors.toList());
         shoppingCartDTO.setCourseIds(courseIds);
-        if (shoppingCart.getUser() != null) {
-            shoppingCartDTO.setUserId(shoppingCart.getUser().getUserId());
-        }
 
         return shoppingCartDTO;
     }
@@ -46,13 +47,15 @@ public class ShoppingCartConverter {
             return null;
         }
 
-        ShoppingCart shoppingCart = modelMapper.map(shoppingCartDTO, ShoppingCart.class);
-        List<Course> courses = shoppingCartDTO.getCourseIds() != null ?
-                shoppingCartDTO.getCourseIds().stream()
-                        .map(id -> courseService.getCourseById(id).orElse(null))
-                        .filter(course -> course != null)
-                        .collect(Collectors.toList()) :
-                null;
+        ShoppingCart shoppingCart = new ShoppingCart();
+        shoppingCart.setId(shoppingCartDTO.getId());
+        shoppingCart.setTotalAmount(shoppingCartDTO.getTotalAmount());
+
+        List<Course> courses = shoppingCartDTO.getCourseIds().stream()
+                .map(id -> courseService.getCourseById(id).orElse(null))
+                .filter(course -> course != null)
+                .collect(Collectors.toList());
+
         shoppingCart.setCourses(courses);
 
         if (shoppingCartDTO.getUserId() != null) {
