@@ -6,4 +6,6 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface IShoppingCartRepository extends JpaRepository<ShoppingCart, Long> {
+    public ShoppingCart addCourseToCart(Long cartId, Long userId);
+    public double calculateTotalAmount(Long cartId);
 }

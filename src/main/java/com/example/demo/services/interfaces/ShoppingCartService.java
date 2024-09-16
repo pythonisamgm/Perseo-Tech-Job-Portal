@@ -18,4 +18,7 @@ public interface ShoppingCartService {
 
     public void deleteAllShoppingCarts();
 
+    public ShoppingCart addCourseToCart(Long cartId, Long userId);
+
+    public double calculateTotalAmount(Long cartId);
 }
