@@ -64,9 +64,13 @@ public class ShoppingCartServiceImpl implements ShoppingCartService {
     public void deleteAllShoppingCarts() {
         shoppingCartRepository.deleteAll();
     }
-    public double calculateTotalAmount(List<Course> courses) {
-        return courses.stream()
-                .mapToDouble(Course::getPrice)
+    public double calculateTotalAmount(Long cartId) {
+        ShoppingCart cart = shoppingCartRepository.findById(cartId)
+                .orElseThrow(() -> new RuntimeException("ShoppingCart not found"));
+
+        List<Course> cartCourses = cart.getCourses();
+        return cartCourses.stream()
+                .mapToDouble(course -> course.getPrice() != null ? course.getPrice() : 0.0)
                 .sum();
     }
 
@@ -78,15 +82,9 @@ public class ShoppingCartServiceImpl implements ShoppingCartService {
                 .orElseThrow(() -> new RuntimeException("User not found"));
 
         List<Course> userCourses = user.getCourseList();
-        List<Course> cartCourses = new ArrayList<>(userCourses);
-        cart.setCourses(cartCourses);
+        cart.setCourses(new ArrayList<>(userCourses));
 
-        double totalAmount = calculateTotalAmount(cartCourses);
-        cart.setTotalAmount(totalAmount);
-
-        ShoppingCart updatedCart = shoppingCartRepository.save(cart);
-
-        return updatedCart;
+        return shoppingCartRepository.save(cart);
     }
 
 }

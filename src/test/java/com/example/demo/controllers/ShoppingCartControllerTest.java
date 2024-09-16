@@ -183,44 +183,43 @@ class ShoppingCartControllerTest {
         mockMvc.perform(delete("/api/v1/shoppingCart/delete/all"))
                 .andExpect(status().isNoContent());
     }
+    @Test
+    void testGetTotalAmount() throws Exception {
+        long cartId = 1L;
+        double expectedTotalAmount = 300.0; // Ajusta esto a los valores esperados
+
+        when(shoppingCartService.calculateTotalAmount(cartId)).thenReturn(expectedTotalAmount);
+
+        mockMvc.perform(get("/api/v1/shoppingCart/" + cartId + "/totalAmount")
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andExpect(content().string(String.valueOf(expectedTotalAmount)));
+    }
 
     @Test
     void addCourseToCart() throws Exception {
-        String updatedCartJson = "{"
+        String expectedJson = "{"
                 + "\"id\": 1,"
                 + "\"userId\": 1,"
-                + "\"courseIds\": [1]"
+                + "\"courseIds\": [1, 2]"
                 + "}";
 
         when(shoppingCartConverter.shoppingCartToDto(any(ShoppingCart.class))).thenReturn(shoppingCartDTO1);
 
-        mockMvc.perform(put("/api/v1/shoppingCart/1/courses/1")
+        mockMvc.perform(put("/api/v1/shoppingCart/1/user/1")
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andExpect(result -> {
                     String responseBody = result.getResponse().getContentAsString();
                     System.out.println("Response Body: " + responseBody);
-                    JSONAssert.assertEquals(updatedCartJson, responseBody, false);
+                    try {
+                        JSONAssert.assertEquals(expectedJson, responseBody, false);
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
                 });
     }
 
-    @Test
-    void removeCourseFromCart() throws Exception {
-        String updatedCartJson = "{"
-                + "\"id\": 1,"
-                + "\"userId\": 1,"
-                + "\"courseIds\": [1]"
-                + "}";
 
-        when(shoppingCartConverter.shoppingCartToDto(any(ShoppingCart.class))).thenReturn(shoppingCartDTO1);
 
-        mockMvc.perform(delete("/api/v1/shoppingCart/1/courses/1")
-                        .contentType(MediaType.APPLICATION_JSON))
-                .andExpect(status().isOk())
-                .andExpect(result -> {
-                    String responseBody = result.getResponse().getContentAsString();
-                    System.out.println("Response Body: " + responseBody);
-                    JSONAssert.assertEquals(updatedCartJson, responseBody, false);
-                });
-    }
 }

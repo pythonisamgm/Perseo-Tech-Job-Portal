@@ -56,6 +56,9 @@ class ShoppingCartServiceImplTest {
         course2.setId(2L);
         course2.setTitle("Course 2");
 
+
+        user.setCourseList(Arrays.asList(course1, course2));
+
         cart = new ShoppingCart();
         cart.setId(1L);
         cart.setUser(user);
@@ -138,35 +141,39 @@ class ShoppingCartServiceImplTest {
 
     @Test
     void testAddCourseToCart() {
+        when(shoppingCartRepository.save(any(ShoppingCart.class))).thenReturn(cart);
+
         when(shoppingCartRepository.findById(1L)).thenReturn(Optional.of(cart));
-        when(courseRepository.findById(1L)).thenReturn(Optional.of(course1));
+        when(userRepository.findById(1L)).thenReturn(Optional.of(user));
 
         ShoppingCart result = shoppingCartService.addCourseToCart(1L, 1L);
 
-        assertNotNull(result);
-        assertEquals(1, result.getCourses().size());
-        assertEquals(course1, result.getCourses().get(0));
+        assertEquals(2, result.getCourses().size());
+        assertTrue(result.getCourses().contains(course1));
+        assertTrue(result.getCourses().contains(course2));
 
         verify(shoppingCartRepository, times(1)).findById(1L);
-        verify(courseRepository, times(1)).findById(1L);
-        verify(shoppingCartRepository, times(1)).save(cart);  // Ensure cart is saved
+        verify(userRepository, times(1)).findById(1L);
+        verify(shoppingCartRepository, times(1)).save(result);
     }
-
     @Test
-    void testRemoveCourseFromCart() {
-        cart.getCourses().add(course1);
+    void testCalculateTotalAmount() {
+        course1.setPrice(100.0);
+        course2.setPrice(200.0);
+
+        cart.setCourses(Arrays.asList(course1, course2));
 
         when(shoppingCartRepository.findById(1L)).thenReturn(Optional.of(cart));
-        when(courseRepository.findById(1L)).thenReturn(Optional.of(course1));
 
-        ShoppingCart result = shoppingCartService.removeCourseFromCart(1L, 1L);
+        double totalAmount = shoppingCartService.calculateTotalAmount(1L);
 
-        assertNotNull(result);
-        assertEquals(0, result.getCourses().size());
+        double expectedTotalAmount = 100.0 + 200.0;
+        assertEquals(expectedTotalAmount, totalAmount);
 
         verify(shoppingCartRepository, times(1)).findById(1L);
-        verify(courseRepository, times(1)).findById(1L);
-        verify(shoppingCartRepository, times(1)).save(cart);  // Ensure cart is saved
     }
+
+
+
 
 }

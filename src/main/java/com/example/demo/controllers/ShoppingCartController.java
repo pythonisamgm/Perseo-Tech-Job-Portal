@@ -84,6 +84,11 @@ public class ShoppingCartController {
         return ResponseEntity.noContent().build();
     }
 
+    @GetMapping("/{cartId}/totalAmount")
+    public ResponseEntity<Double> getTotalAmount(@PathVariable Long cartId) {
+        double totalAmount = shoppingCartService.calculateTotalAmount(cartId);
+        return ResponseEntity.ok(totalAmount);
+    }
     @PutMapping("/{cartId}/user/{userId}")
     public ResponseEntity<ShoppingCartDTO> addCoursesFromUserToCart(@PathVariable Long cartId, @PathVariable Long userId) {
         ShoppingCart updatedCart = shoppingCartService.addCourseToCart(cartId, userId);
