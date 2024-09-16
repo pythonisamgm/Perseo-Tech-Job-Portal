@@ -1,17 +1,18 @@
-spring:
-  security:
-    oauth2:
-      client:
-        registration:
-          github:
-            clientId: Ov23li3xlZSitOCoJKVK
-            clientSecret: 9efddd1f813d480bead6e4af08ceae9345cf8435
-            scope: user:email
-            redirectUri: "{baseUrl}/login/oauth2/code/github"
-            authorizationGrantType: authorization_code
-            clientName: GitHub
-        provider:
-          github:
-            authorizationUri: https://github.com/login/oauth/authorize
-            tokenUri: https://github.com/login/oauth/access_token
-            userInfoUri: https://api.github.com/user
+#spring:
+#  security:
+#    oauth2:
+#      client:
+#        registration:
+#          github:
+#            clientId: Ov23li3xlZSitOCoJKVK
+#            clientSecret: 9efddd1f813d480bead6e4af08ceae9345cf8435
+#            scope: user:email
+#            redirectUri: "{baseUrl}/login/oauth2/code/github"
+#            authorizationGrantType: authorization_code
+#            clientName: GitHub
+#        provider:
+#          github:
+#            authorizationUri: https://github.com/login/oauth/authorize
+#            tokenUri: https://github.com/login/oauth/access_token
+#            userInfoUri: https://api.github.com/user
+#

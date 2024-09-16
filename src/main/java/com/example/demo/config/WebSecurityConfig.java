@@ -1,6 +1,5 @@
 package com.example.demo.config;
 
-
 import com.example.demo.jwt.AuthTokenFilter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
@@ -20,7 +19,6 @@ public class WebSecurityConfig {
     private final AuthenticationProvider authenticationProvider;
     private final AuthTokenFilter authTokenFilter;
 
-
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         return http
@@ -28,8 +26,6 @@ public class WebSecurityConfig {
                 .authorizeHttpRequests(authRequest -> authRequest
 
                         .requestMatchers("/api/auth/**").permitAll() // Registro, login, etc.
-                        .requestMatchers("/login/oauth2/**").permitAll()
-                        .requestMatchers("/oauth2/authorization/**").permitAll() // Permite el acceso a la autorización OAuth2
                         .requestMatchers("/api/v1/**").authenticated()
                         .requestMatchers("/api/auth/register").permitAll()
 
@@ -61,25 +57,9 @@ public class WebSecurityConfig {
                         .requestMatchers("/api/v1/courses/course/{id}").hasAnyAuthority("ADMIN", "USER") // Ver detalle del curso (admin y usuario)
                         .requestMatchers("/api/v1/experiences/update/{id}").hasAnyAuthority("ADMIN", "USER") // Actualizar experiencia laboral (admin y usuario)
                         .requestMatchers("/api/v1/experiences/delete/{id}").hasAnyAuthority("ADMIN", "USER") // Eliminar experiencia laboral (admin y usuario)
-                        .requestMatchers("/api/auth/**").permitAll() // Registro, login, etc.
 
                         .anyRequest().authenticated()
                 )
-//                    .csrf(csrf -> csrf.disable()) // Desactiva CSRF para API REST
-//                    .authorizeHttpRequests(authorizeRequests -> authorizeRequests
-//                            .requestMatchers("/api/auth/**").permitAll() // Permite acceso a endpoints de autenticación
-//                            .requestMatchers("/login/oauth2/**").permitAll() // Permite acceso a endpoints de OAuth2
-//                            .requestMatchers("/oauth2/authorization/**").permitAll() // Permite acceso a endpoints de autorización OAuth2
-//                            .requestMatchers("/api/v1/**").authenticated() // Requiere autenticación para endpoints API
-//                            .requestMatchers("/api/auth/register").permitAll() // Permite registro sin autenticación
-//                            .anyRequest().authenticated() // Requiere autenticación para cualquier otro endpoint no especificado
-//                    )
-                .oauth2Login(oauth2 -> oauth2
-
-                        //.defaultSuccessUrl("/api/v1/users/create") // Redirige a una URL predeterminada después de un login exitoso
-                        .failureUrl("/login?error") // Redirige a una URL en caso de error en el login
-                )
-
                 .sessionManagement(sessionManager ->
                         sessionManager.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authenticationProvider(authenticationProvider)
@@ -87,5 +67,3 @@ public class WebSecurityConfig {
                 .build();
     }
 }
-
-
