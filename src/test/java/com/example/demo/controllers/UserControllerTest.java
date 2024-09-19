@@ -14,6 +14,7 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.skyscreamer.jsonassert.JSONAssert;
+import org.skyscreamer.jsonassert.JSONCompareMode;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
@@ -60,8 +61,9 @@ class UserControllerTest {
         userDTOList = List.of(userDTO1, userDTO2);
         userList = List.of(user1, user2);
 
+        when(userConverter.userToDto(user1)).thenReturn(userDTO1);
+        when(userConverter.userToDto(user2)).thenReturn(userDTO2);
         when(userConverter.dtoToUser(any(UserDTO.class))).thenReturn(user1);
-        when(userConverter.userToDto(any(User.class))).thenReturn(userDTO1);
         when(userService.getAllUsers()).thenReturn(userList);
         when(userService.getUserById(anyLong())).thenReturn(Optional.of(user1));
         when(userService.createUser(any(User.class))).thenReturn(user1);
@@ -89,7 +91,8 @@ class UserControllerTest {
 
     @Test
     void getAllUsers() throws Exception {
-        String expectedResponseBody = new ObjectMapper().writeValueAsString(userDTOList);
+        ObjectMapper objectMapper = new ObjectMapper();
+        String expectedResponseBody = objectMapper.writeValueAsString(userDTOList);
 
         mockMvc.perform(get("/api/v1/users/all")
                         .contentType(MediaType.APPLICATION_JSON))
@@ -97,9 +100,12 @@ class UserControllerTest {
                 .andExpect(result -> {
                     String responseBody = result.getResponse().getContentAsString();
                     System.out.println("Response Body: " + responseBody);
-                    JSONAssert.assertEquals(expectedResponseBody, responseBody, false);
+
+                    JSONAssert.assertEquals(expectedResponseBody, responseBody, JSONCompareMode.LENIENT);
                 });
     }
+
+
 
     @Test
     void getUserById() throws Exception {

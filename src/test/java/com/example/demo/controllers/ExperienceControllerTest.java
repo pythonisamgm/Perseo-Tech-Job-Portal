@@ -83,7 +83,8 @@ class ExperienceControllerTest {
         experienceList = List.of(experience1, experience2);
 
 
-        when(experienceConverter.experienceToDto(any(Experience.class))).thenReturn(experienceDTO1);
+        when(experienceConverter.experienceToDto(experience1)).thenReturn(experienceDTO1);
+        when(experienceConverter.experienceToDto(experience2)).thenReturn(experienceDTO2);
         when(experienceConverter.dtoToExperience(any(ExperienceDTO.class))).thenReturn(experience1);
         when(experienceService.getAllExperiences()).thenReturn(experienceList);
         when(experienceService.getExperienceById(anyLong())).thenReturn(Optional.of(experience1));
@@ -126,6 +127,7 @@ class ExperienceControllerTest {
     void getAllExperiences() throws Exception {
         ObjectMapper objectMapper = new ObjectMapper();
         objectMapper.registerModule(new JavaTimeModule());
+
         String expectedResponseBody = objectMapper.writeValueAsString(experienceDTOList);
 
         mockMvc.perform(get("/api/v1/experiences/all")
@@ -134,9 +136,10 @@ class ExperienceControllerTest {
                 .andExpect(result -> {
                     String responseBody = result.getResponse().getContentAsString();
                     System.out.println("Response Body: " + responseBody);
-                    JSONAssert.assertEquals(expectedResponseBody, responseBody, false);
+                    JSONAssert.assertEquals(expectedResponseBody, responseBody, true);
                 });
     }
+
 
     @Test
     void getExperienceById() throws Exception {
