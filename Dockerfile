@@ -13,7 +13,7 @@ RUN apt-get update && \
 COPY pom.xml ./
 COPY src ./src
 
-COPY target/Perseo-0.0.1-SNAPSHOT.jar app.jar
+COPY target/demo-0.0.1-SNAPSHOT.jar app.jar
 #Exponer el puerto en el que la aplicación se ejecuta
 
 EXPOSE 8081

@@ -3,12 +3,12 @@ services:
 
   springboot-app:
 
-    build: src/main/java/com/example/demo
+    build: .
 
-    container_name: Perseo-app
+    container_name: demo
 
     ports:
-      - "8080:8080"
+      - "8080:8081"
 
     environment:
       SPRING_DATASOURCE_URL: jdbc:mysql://host.docker.internal:3306/perseo_DB
