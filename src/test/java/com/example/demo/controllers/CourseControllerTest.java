@@ -3,6 +3,7 @@ package com.example.demo.controllers;
 import com.example.demo.dto.course.CourseConverter;
 import com.example.demo.dto.course.CourseDTO;
 import com.example.demo.models.Course;
+import com.example.demo.models.User;
 import com.example.demo.services.CourseServiceImpl;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.json.JSONException;
@@ -54,7 +55,8 @@ class CourseControllerTest {
         courseDTO1 = new CourseDTO(1L, "Title1", "Description1", 100.0, "2020-01-01T00:00:00", List.of(1L));
         courseDTO2 = new CourseDTO(2L, "Title2", "Description2", 200.0, "2021-02-01T00:00:00", List.of(2L));
 
-        Course course1 = new Course(1L, "Title1", "Description1", 100.0, null, null);
+        User User = new User();
+        Course course1 = new Course(1L, "Title1", "Description1", 100.0, null,List.of(User));
         Course course2 = new Course(2L, "Title2", "Description2", 200.0, null, null);
 
         courseDTOList = List.of(courseDTO1, courseDTO2);
@@ -70,6 +72,7 @@ class CourseControllerTest {
         doNothing().when(courseService).deleteAllCourses();
     }
 
+
     @Test
     void createCourse() throws Exception {
         String courseJson = "{"
@@ -78,8 +81,7 @@ class CourseControllerTest {
                 + "\"description\": \"Description1\","
                 + "\"price\": 100.0,"
                 + "\"createdAt\": \"2020-01-01T00:00:00\","
-                + "\"usersId\": [1],"
-                + "\"shoppingCartId\": 1"
+                + "\"usersId\": [1]"
                 + "}";
 
         mockMvc.perform(post("/api/v1/courses/create")
@@ -88,7 +90,6 @@ class CourseControllerTest {
                 .andExpect(status().isCreated())
                 .andExpect(content().json(courseJson));
     }
-
     @Test
     void getAllCourses() throws Exception {
 
@@ -126,11 +127,22 @@ class CourseControllerTest {
                 + "\"description\": \"Description1\","
                 + "\"price\": 100.0,"
                 + "\"createdAt\": \"2020-01-01T00:00:00\","
-                + "\"usersId\": [1],"
-                + "\"shoppingCartId\": 1"
+                + "\"usersId\": [1]"
                 + "}";
 
-        when(courseConverter.dtoToCourse(any(CourseDTO.class))).thenReturn(course1);
+        Course updatedCourse = new Course(1L, "Title1", "Description1", 100.0, "2020-01-01T00:00:00", List.of(new User()));
+        CourseDTO updatedCourseDTO = CourseDTO.builder()
+                .id(1L)
+                .title("Title1")
+                .description("Description1")
+                .price(100.0)
+                .createdAt("2020-01-01T00:00:00")
+                .usersId(List.of(1L))
+                .build();
+
+        when(courseConverter.dtoToCourse(any(CourseDTO.class))).thenReturn(updatedCourse);
+        when(courseService.updateCourse(any(Course.class))).thenReturn(updatedCourse);
+        when(courseConverter.courseToDto(any(Course.class))).thenReturn(updatedCourseDTO);
 
         mockMvc.perform(put("/api/v1/courses/update/1")
                         .contentType(MediaType.APPLICATION_JSON)
@@ -138,14 +150,12 @@ class CourseControllerTest {
                 .andExpect(status().isOk())
                 .andExpect(result -> {
                     String responseBody = result.getResponse().getContentAsString();
-                    System.out.println("Response Body: " + responseBody);
-                    try {
-                        JSONAssert.assertEquals(updatedCourseJson, responseBody, false);
-                    } catch (JSONException e) {
-                        e.printStackTrace();
-                    }
+                    ObjectMapper objectMapper = new ObjectMapper();
+                    String expectedResponseBody = objectMapper.writeValueAsString(updatedCourseDTO);
+                    JSONAssert.assertEquals(expectedResponseBody, responseBody, false);
                 });
     }
+
 
     @Test
     void deleteCourseById() throws Exception {

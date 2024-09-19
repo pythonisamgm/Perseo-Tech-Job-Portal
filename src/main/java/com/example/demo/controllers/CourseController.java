@@ -61,8 +61,13 @@ public class CourseController {
     @PutMapping("/update/{id}")
     public ResponseEntity<CourseDTO> updateCourse(@PathVariable Long id, @RequestBody CourseDTO courseDTO) {
         Course course = courseConverter.dtoToCourse(courseDTO);
+
+        if (course == null) {
+            return ResponseEntity.badRequest().body(null); // Or handle this case in a way that fits your needs
+        }
         course.setId(id);
         Course updatedCourse = courseService.updateCourse(course);
+
         if (updatedCourse != null) {
             CourseDTO updatedCourseDTO = courseConverter.courseToDto(updatedCourse);
             return ResponseEntity.ok(updatedCourseDTO);
@@ -70,6 +75,7 @@ public class CourseController {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
         }
     }
+
 
 
     @DeleteMapping("/delete/{id}")
