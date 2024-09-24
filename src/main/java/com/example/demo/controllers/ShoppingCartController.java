@@ -4,6 +4,7 @@ import com.example.demo.dto.shoppingCart.ShoppingCartConverter;
 import com.example.demo.dto.shoppingCart.ShoppingCartDTO;
 import com.example.demo.models.ShoppingCart;
 import com.example.demo.services.ShoppingCartServiceImpl;
+import com.example.demo.services.interfaces.ShoppingCartService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -21,7 +22,7 @@ import java.util.stream.Collectors;
 public class ShoppingCartController {
 
     @Autowired
-    private final ShoppingCartServiceImpl shoppingCartService;
+    private final ShoppingCartService shoppingCartService;
     @Autowired
     private final ShoppingCartConverter shoppingCartConverter;
 

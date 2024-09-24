@@ -14,10 +14,12 @@ public class UserServiceImpl implements UserService {
     @Autowired
     IUserRepository iUserRepository;
 
+    @Override
     public User createUser(User user) {
         return iUserRepository.save(user);
     }
 
+    @Override
     public List<User> getAllUsers() {
         try {
             return iUserRepository.findAll();
@@ -26,6 +28,7 @@ public class UserServiceImpl implements UserService {
         }
     }
 
+    @Override
     public Optional<User> getUserById(long id) {
         try {
             return iUserRepository.findById(id);
@@ -34,6 +37,7 @@ public class UserServiceImpl implements UserService {
         }
     }
 
+    @Override
     public User updateUser(User updatedUser) {
         Optional<User> existingUser = iUserRepository.findById(updatedUser.getUserId());
         if (existingUser.isPresent()) {
@@ -47,10 +51,12 @@ public class UserServiceImpl implements UserService {
         return null;
     }
 
+    @Override
     public void deleteUserById(Long id) {
         iUserRepository.deleteById(id);
     }
 
+    @Override
     public void deleteAllUsers() {
         iUserRepository.deleteAll();
     }

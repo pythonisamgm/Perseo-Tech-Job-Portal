@@ -1,6 +1,7 @@
 package com.example.demo.services.interfaces;
 
 import com.example.demo.models.Experience;
+import com.example.demo.models.User;
 
 import java.util.List;
 import java.util.Optional;
@@ -17,4 +18,6 @@ public interface ExperienceService {
     public void deleteExperienceById(Long id);
 
     public void deleteAllExperiences();
+
+    List<Experience> getExperiencesByUser(User user);
 }

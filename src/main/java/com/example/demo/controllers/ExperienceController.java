@@ -5,6 +5,7 @@ import com.example.demo.dto.experience.ExperienceDTO;
 import com.example.demo.models.Experience;
 import com.example.demo.models.User;
 import com.example.demo.services.ExperienceServiceImpl;
+import com.example.demo.services.interfaces.ExperienceService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -22,7 +23,7 @@ import java.util.stream.Collectors;
 public class ExperienceController {
 
     @Autowired
-    private final ExperienceServiceImpl experienceService;
+    private final ExperienceService experienceService;
 
     @Autowired
     private final ExperienceConverter experienceConverter;

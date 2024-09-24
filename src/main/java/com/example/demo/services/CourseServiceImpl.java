@@ -15,10 +15,12 @@ public class CourseServiceImpl implements CourseService {
     @Autowired
     private ICourseRepository courseRepository;
 
+    @Override
     public Course createCourse(Course course) {
         return courseRepository.save(course);
     }
 
+    @Override
     public List<Course> getAllCourses() {
         try {
             return courseRepository.findAll();
@@ -27,6 +29,7 @@ public class CourseServiceImpl implements CourseService {
         }
     }
 
+    @Override
     public Optional<Course> getCourseById(Long id) {
         try {
             return courseRepository.findById(id);
@@ -35,6 +38,7 @@ public class CourseServiceImpl implements CourseService {
         }
     }
 
+    @Override
     public Course updateCourse(Course updatedCourse) {
         Optional<Course> existingCourse = courseRepository.findById(updatedCourse.getId());
         if (existingCourse.isPresent()) {
@@ -49,10 +53,12 @@ public class CourseServiceImpl implements CourseService {
         return null;
     }
 
+    @Override
     public void deleteCourseById(Long id) {
         courseRepository.deleteById(id);
     }
 
+    @Override
     public void deleteAllCourses() {
         courseRepository.deleteAll();
     }

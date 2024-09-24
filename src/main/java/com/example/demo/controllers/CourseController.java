@@ -4,6 +4,7 @@ import com.example.demo.dto.course.CourseConverter;
 import com.example.demo.dto.course.CourseDTO;
 import com.example.demo.models.Course;
 import com.example.demo.services.CourseServiceImpl;
+import com.example.demo.services.interfaces.CourseService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -21,7 +22,7 @@ import java.util.stream.Collectors;
 public class CourseController {
 
     @Autowired
-    private final CourseServiceImpl courseService;
+    private final CourseService courseService;
 
     @Autowired
     private final CourseConverter courseConverter;

@@ -27,10 +27,12 @@ public class ShoppingCartServiceImpl implements ShoppingCartService {
     @Autowired
     private ICourseRepository courseRepository;
 
+    @Override
     public ShoppingCart createShoppingCart(ShoppingCart shoppingCart) {
         return shoppingCartRepository.save(shoppingCart);
     }
 
+    @Override
     public List<ShoppingCart> getAllShoppingCarts() {
         try {
             return shoppingCartRepository.findAll();
@@ -39,6 +41,7 @@ public class ShoppingCartServiceImpl implements ShoppingCartService {
         }
     }
 
+    @Override
     public Optional<ShoppingCart> getShoppingCartById(Long id) {
         try {
             return shoppingCartRepository.findById(id);
@@ -47,6 +50,7 @@ public class ShoppingCartServiceImpl implements ShoppingCartService {
         }
     }
 
+    @Override
     public ShoppingCart updateShoppingCart(ShoppingCart updatedShoppingCart) {
         Optional<ShoppingCart> existingShoppingCart = shoppingCartRepository.findById(updatedShoppingCart.getId());
         if (existingShoppingCart.isPresent()) {
@@ -57,13 +61,17 @@ public class ShoppingCartServiceImpl implements ShoppingCartService {
         return null;
     }
 
+    @Override
     public void deleteShoppingCartById(Long id) {
         shoppingCartRepository.deleteById(id);
     }
 
+    @Override
     public void deleteAllShoppingCarts() {
         shoppingCartRepository.deleteAll();
     }
+
+    @Override
     public double calculateTotalAmount(Long cartId) {
         ShoppingCart cart = shoppingCartRepository.findById(cartId)
                 .orElseThrow(() -> new RuntimeException("ShoppingCart not found"));
@@ -74,6 +82,7 @@ public class ShoppingCartServiceImpl implements ShoppingCartService {
                 .sum();
     }
 
+    @Override
     public ShoppingCart addCourseToCart(Long cartId, Long userId) {
         ShoppingCart cart = shoppingCartRepository.findById(cartId)
                 .orElseThrow(() -> new RuntimeException("ShoppingCart not found"));

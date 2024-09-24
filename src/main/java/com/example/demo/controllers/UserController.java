@@ -4,6 +4,7 @@ import com.example.demo.dto.user.UserConverter;
 import com.example.demo.dto.user.UserDTO;
 import com.example.demo.models.User;
 import com.example.demo.services.UserServiceImpl;
+import com.example.demo.services.interfaces.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -21,7 +22,7 @@ import java.util.stream.Collectors;
 public class UserController {
 
     @Autowired
-    private final UserServiceImpl userService;
+    private final UserService userService;
     @Autowired
     private final UserConverter userConverter;
 
