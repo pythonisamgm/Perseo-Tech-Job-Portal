@@ -1,0 +1,18 @@
+name: Nuestra primera pipeline
+
+on:
+  push:
+    branches:
+      - main
+      - dev
+      - feature/x
+
+jobs:
+  builds:
+    runs-on: windows-2019
+
+    steps:
+        - name: fetch last commit
+          uses: actions/checkout@v4
+          with:
+            fetch-depth: 0
