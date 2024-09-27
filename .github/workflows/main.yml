@@ -1,0 +1,15 @@
+name: First workflow
+
+on:
+  push:
+  #[push, fork]:
+  branches: [main]
+
+jobs:
+    saludo_inicial:
+      runs-on: windows-2019
+      steps:
+        - name: saludando
+          #run: echo “Hola chicos estamos aprendiendo GIthub Actions”
+          run: |
+            echo “Hola chicos estamos aprendiendo GIthub Actions”
