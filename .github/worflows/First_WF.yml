@@ -2,18 +2,15 @@ name: First workflow
 
 on:
   push:
-  #[push, fork]:
-  branches: [main]
+    branches: [main]
 
 jobs:
-    saludo_inicial:
-      runs-on: windows-latest
-      steps:
-        - name: saludando
-          #run: echo “Hola chicos estamos aprendiendo GIthub Actions”
-          run: |
-            echo “Hola chicos estamos aprendiendo GIthub Actions”
-        - name: Qué día es hoy
-          run: date
-        - name: COntenido de la carpeta
-          run: ls
+  saludo_inicial:
+    runs-on: windows-latest
+    steps:
+      - name: saludando
+        run: echo "Hola chicos estamos aprendiendo GitHub Actions"
+      - name: Qué día es hoy
+        run: date
+      - name: Contenido de la carpeta
+        run: dir Annotations
