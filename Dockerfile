@@ -1,22 +1,17 @@
-#Utilizar la imagen oficial de OpenJDK 21
-
+# Use the official OpenJDK 21 image
 FROM openjdk:21-jdk-slim
-#Establecer el directorio de trabajo
 
+# Set the working directory
 WORKDIR /app
-#Copiar el archivo JAR de la aplicación al contenedor
-RUN apt-get update && \
-    apt-get install -y maven && \
-    apt-get clean && \
-    rm -rf /var/lib/apt/lists/*
 
-COPY pom.xml ./
-COPY src ./src
+# Build the application using Maven
+RUN mvn clean install
 
-COPY target/demo-0.0.1-SNAPSHOT.jar app.jar
-#Exponer el puerto en el que la aplicación se ejecuta
+# Copy the JAR file from the target directory to the container
+COPY target/perseo-0.0.1-SNAPSHOT.jar app.jar
 
+# Expose the port the application runs on
 EXPOSE 8081
-#Comando para ejecutar la aplicación
 
+# Command to run the application
 ENTRYPOINT ["java", "-jar", "app.jar"]

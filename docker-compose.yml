@@ -1,17 +1,13 @@
-version: '3.9'
+version: '3.8'
+
 services:
-
-  springboot-app:
-
+  perseo-app:
     build: .
-
-    container_name: demo
-
+    container_name: perseo-app
     ports:
-      - "8080:8081"
-
+      - "8081:8081"
     environment:
-      SPRING_DATASOURCE_URL: jdbc:mysql://host.docker.internal:3306/perseo_DB
+      SPRING_DATASOURCE_URL: jdbc:mysql://host.docker.internal:3306/perseo_db
       SPRING_DATASOURCE_USERNAME: root
       SPRING_DATASOURCE_PASSWORD:
       SPRING_JPA_HIBERNATE_DDL_AUTO: update
