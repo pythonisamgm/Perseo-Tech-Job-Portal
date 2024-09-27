@@ -7,9 +7,13 @@ on:
 
 jobs:
     saludo_inicial:
-      runs-on: windows-2019
+      runs-on: windows-latest
       steps:
         - name: saludando
           #run: echo “Hola chicos estamos aprendiendo GIthub Actions”
           run: |
             echo “Hola chicos estamos aprendiendo GIthub Actions”
+        - name: Qué día es hoy
+          run: date
+        - name: COntenido de la carpeta
+          run: ls
