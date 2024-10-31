@@ -1,0 +1,79 @@
+name: Build and Deploy Docker Image to Docker Hub
+
+on:
+  push:
+    branches:
+      - dev
+      - main
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Log in to Docker Hub
+        run: echo ${{ secrets.DOCKER_PASSWORD }} | docker login -u ${{ secrets.DOCKER_USERNAME }} --password-stdin
+
+      # 1. Checkout the code
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      # 2. Stop default MySQL service if running
+      - name: Shutdown Ubuntu MySQL (SUDO)
+        run: sudo service mysql stop
+
+      # 3. Set up MySQL using mirromutth/mysql-action
+      - name: Set up MySQL
+        uses: mirromutth/mysql-action@v1.1
+        with:
+          host port: 3306              # Host port
+          container port: 3306         # Container port
+          mysql version: '8.0'         # MySQL version
+          mysql database: 'db_flight_bookings'  # Database to create
+          mysql root password: '123456'  # Root password
+          mysql user: 'root'           # Root user
+          mysql password: '123456'     # Root user password
+
+      # 4. Wait for MySQL to be ready
+      - name: Wait for MySQL to be ready
+        run: |
+          max_attempts=5
+          attempt_num=1
+          until mysql -h 127.0.0.1 -P 3306 -u root -p123456 -e "SHOW DATABASES;" || [ $attempt_num -eq $max_attempts ]; do
+            echo "Attempt $attempt_num/$max_attempts: Waiting for MySQL..."
+            attempt_num=$((attempt_num+1))
+            sleep 5
+          done
+          if [ $attempt_num -gt $max_attempts ]; then
+            echo "MySQL is not ready after $max_attempts attempts. Exiting."
+            exit 1
+          fi
+      # 5. Set up JDK 21
+      - name: Set up JDK 21
+        uses: actions/setup-java@v4
+        with:
+          java-version: '21'
+          distribution: 'temurin'
+
+      # 6. Create application-test.properties
+      - name: Create application-test.properties
+        run: |
+          echo "spring.datasource.url=jdbc:mysql://127.0.0.1:3306/db_flight_bookings" > src/main/resources/application-test.properties
+          echo "spring.datasource.username=root" >> src/main/resources/application-test.properties
+          echo "spring.datasource.password=123456" >> src/main/resources/application-test.properties
+          echo "spring.datasource.driver-class-name=com.mysql.cj.jdbc.Driver" >> src/main/resources/application-test.properties
+          echo "spring.jpa.hibernate.ddl-auto=create-drop" >> src/main/resources/application-test.properties
+          echo "spring.jpa.properties.hibernate.dialect=org.hibernate.dialect.MySQL8Dialect" >> src/main/resources/application-test.properties
+          echo "spring.sql.init.mode=always" >> src/main/resources/application-test.properties
+      # 7. Build API with Maven
+      - name: Build API
+        run: mvn clean install -DskipTests
+
+      - name: Build Docker image
+        run: docker build -t ${{ secrets.DOCKER_USERNAME }}/flight-bookings:latest .
+
+      - name: Push Docker image to Docker Hub
+        run: docker push ${{ secrets.DOCKER_USERNAME }}/flight-bookings:latest
